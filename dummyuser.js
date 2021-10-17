@@ -1,34 +1,49 @@
 const c_users = [];
-const c_pictures=[]
-// joins the user to the specific chatroom
+const c_point =[]
+
 function join_User(id, username, room) {
   const p_user = { id, username, room };
-
   c_users.push(p_user);
-  console.log(c_users, "users");
-
   return p_user;
 }
 
-function join_picture(picData){
-  const pic=picData
-  c_pictures.push(picData);
-  console.log(c_pictures,"pictures")
-  return pic
+function get_Users(roomname){
+  return c_users.filter((p_user)=>p_user.room===roomname)
+  
 }
 
-console.log("user out", c_users);
+function get_Points_Array(){
+  return c_point;
+}
 
-// Gets a particular user id to return the current user
+
 function get_Current_User(id) {
   return c_users.find((p_user) => p_user.id === id);
 }
 
-// called when the user leaves the chat and its user object deleted from array
-function user_Disconnect(id) {
-  const index = c_users.findIndex((p_user) => p_user.id === id);
+function update_Points_Array(userId, username , color, x0, x1, y0, y1){
+  const p_point = {userId, username , color, x0, x1, y0, y1};
+  c_point.push(p_point);
+}
 
-  if (index !== -1) {
+function get_Points_Array_Filtered(userid){
+  console.log(userid)
+  const c_points_filtered = c_point.filter((point) =>{ return point.userId != userid.userid})
+  //console.log(c_points_filtered)
+  return c_points_filtered;
+
+}
+
+function get_Points_Array_Hidden(userid){
+  const c_points_filtered = c_point.filter((point) =>{ return point.userId == userid.userid})
+  return c_points_filtered;
+
+}
+
+
+function user_Disconnect(id){
+  const index= c_users.findIndex(user => user.id === id)
+  if(index != -1){
     return c_users.splice(index, 1)[0];
   }
 }
@@ -37,5 +52,9 @@ module.exports = {
     join_User,
     get_Current_User,
     user_Disconnect,
-    join_picture
+    get_Users,
+    get_Points_Array,
+    update_Points_Array,
+    get_Points_Array_Filtered,
+    get_Points_Array_Hidden
   };
